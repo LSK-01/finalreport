@@ -65,6 +65,11 @@ D.~Milmo. (2023) Chatgpt reaches 100 million users two months after launch. [Onl
 (2023) Pause giant ai experiments: An open letter. [Online]. Available: \url{https://futureoflife.org/open-letter/pause-giant-ai-experiments/}
 \BIBentrySTDinterwordspacing
 
+\bibitem{genfunding}
+\BIBentryALTinterwordspacing
+(2023) Generative ai. [Online]. Available: \url{https://dealroom.co/guides/generative-ai}
+\BIBentrySTDinterwordspacing
+
 \bibitem{scaling}
 \BIBentryALTinterwordspacing
 (2020) Scaling laws for neural language models. [Online]. Available: \url{https://arxiv.org/abs/2001.08361}

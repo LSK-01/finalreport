@@ -43,7 +43,7 @@
     \textbf{Author:} Luca Sarif-Kattan\\
     \textbf{Supervisor:} Ligang He\\
     \textbf{Year of study:} 2024\\
-    \textbf{Keywords:} AI, Generative AI, Human, Creations, Blockchain, Web App
+    \textbf{Keywords:} AI, Generative AI, Human, Creations, Blockchain, Web App, Node.js, Neural Network
 \end{center}
 
 \newpage
@@ -75,10 +75,10 @@ We are currently (March of 2024) in the midst of a generative AI (GAI) arms race
     \end{figure}
 
     \item \textbf{Lack of regulations and restrictions.} There are currently no restrictions on the development of such technologies in the US, and the EU has introduced limited restrictions in the new AI act \cite{aiact}. There are obvious geopolitical incentives to allow the acceleration of GAI technologies, and open letters calling to pause giant AI experiments have failed to bring action \cite{fol}.
-    \item \textbf{Profit incentives.} Such technologies are applicable across a huge spectrum of high-level tasks. There was 14 billion dollars in funding in 2023 towards GAI technologies.
+    \item \textbf{Profit incentives.} Such technologies are applicable across a huge spectrum of high-level tasks. There was 14 billion dollars in funding in 2023 towards GAI technologies \cite{genfunding}.
 \end{itemize}
 \subsection{A Look at the SOTA}
- A big part of the motivation for such a project comes from the unbelievable progress and ability of current GAI models, and how we might attempt to improve their detection. Therefore, in this section we take a brief look into the current state-of-the-art in GAI. At the moment there are two dominant model types in the GAI world:
+ A big part of the motivation for such a project comes from the unbelievable progress and ability of current GAI models, and how we might attempt to improve their detection. Therefore, in this section we take a brief look into the current state-of-the-art in GAI. At the moment there are two dominant model types:
 \begin{itemize}
     \item Transformer models, used for text generation
     \item Diffusion models, used for image and video generation
@@ -191,23 +191,161 @@ The final design relies on some partially automated verification to give users a
     \item There is a command line interface for easy publishing to the progress timeline for creatives.
 \end{itemize}
 \subsubsection{Advantages}
-This approach had some inherent advantages, addressing the systemic issues we would see when attempting direct detection.
+This approach had some inherent advantages, addressing the systemic issues we see with direct detection.
 \begin{itemize}
     \item Generative AI has a very obvious `diffusion' progression. An image of pure noise is slowly transformed into the final output. This would be easy to spot on a progress timeline.
     \item The approach allows the community to decide the level of AI involvement in a creation they are comfortable with, as this is clearly a gray area. Certain AI tools which simply help a human creator be more effective in creating may not be inherently negative.
-    \item The approach sidesteps the `arms race' between AI detectors and AI generators by allowing the community to decide for themselves what they think constitutes a human made creation. The best neural network detection algorithm to use to achieve the aims of human made is by necessity that of the human brain.
+    \item The approach sidesteps the `arms race' between AI detectors and AI generators by allowing the community to decide for themselves what they think constitutes a human made creation. At a philosophical level, the best `neural network' one can use to achieve the aims of human made is the human brain.
     \begin{figure}[h]
         \centering
         \includegraphics[scale=0.3]{catDiffusion.jpg}
         \caption{An example of the diffusion progression when generating a photo of a cat \cite{cat}.}
     \end{figure}
 \end{itemize}
-\section{Development}
-\subsection{Architecture \& Tech Stack}
-\subsection{Development Areas}
-\subsubsection{Web App}
-\subsubsection{Blockchain}
+\section{Functionality}
+There are then three main areas of development:
+\begin{enumerate}
+    \item \textbf{Web App} \\This involves giving users the ability to make new creations, commit to and view their progress timeline for each creation, and a marketplace for finished creations.
+    \item \textbf{Blockchain Interface} \\This involves creating a simple interface to make any commit tamper-proof and traceable by allowing users to add data from their commits to the blockchain.
+    \item \textbf{Command Line Interface} \\This involves the creation of a command line tool that allows users to easily add commits to a progress timeline.
+\end{enumerate}
+We will look at the completed functionality of each before delving into implementation details.
+\subsection{Web App}
+\subsection{Blockchain Interface}
+\subsection{Command Line Interface}
+
+
+\section{Implementation}
+\subsection{Web App}
+
+\subsubsection{Tech Stack}
+After researching the many available web frameworks, middlewares and backend frameworks, I settled on a modern and scalable tech stack for the web app which would help me develop a reactive and robust app whilst writing clean code.
+\begin{itemize}
+    \item \textbf{SvelteKit} is a full-stack web framework which eliminates the need for a secondary middleware framework and allows for a simple and modern approach to building fast, reactive web apps. SvelteKit features server-side rendering, hydration, compilation minimisation, and plenty of other modern features to ensure an industry-level product. The framework enforces clean code and object-oriented programming practices. 
+    \item \textbf{Tailwind} is an open source CSS framework. The UI is built by directly applying pre-defined styling classes to HTML elements. This allows for quick, consistent, and extensible styling, and works well with the component based methodology of SvelteKit. Tailwind has enamored developers for its customisability, configurability, and responsiveness.
+    \item \textbf{Firebase} is a platform owned by Google offering a variety of tools and services to help developers build, improve and grow their apps. We will make use of the \textbf{Cloud Firestore} offering from Firebase as the primary database for the web app. Firestore is a NoSQL database that allows for fast querying, dynamic data storage and automatic scalability. Security and analytics are built into the product, and there is a generous free tier to facilitate testing and initial deployment of the project. Firestore also has an excellent modular web API that will play well with a JavaScript frontend. Additionally, Firebase offers \textbf{Cloud Storage}, a service for general blob storage of images, audio and video. This will be used for storing files associated with a commit. Again, security and scalability are integral. Finally, Firebase offers an authentication service which allows for the easy creation and maintenance of user accounts with industry-leading security standards.
+\end{itemize}
+
+\subsubsection{General Structure}
+Roughly, a SvelteKit project consists of:
+\begin{itemize}
+    \item a \verb|src/| directory. This contains all the application source code.
+    \item \verb|src/routes| contains all the application's pages and endpoints. SvelteKit uses a filesystem-based routing system, so the folder \verb|src/routes/marketplace| will contain the code for the page route \verb|/marketplace|
+    \item In each route folder, eg. \verb|src/routes/marketplace|, there is a \verb|+page.svelte|, \verb|+layout.svelte|, and potentially a \verb|+page.ts| or \verb|+page.server.ts|.\\\\ \verb|+page.svelte| contains the HTML and any frontend JavaScript for the webpage. \verb|+layout.svelte| contains HTML that can be used to apply a general layout to any pages in the same or nested folders. \\\\\verb|+page.ts| and \verb|+page.server.ts| are like the `backend' for a page, and contain load functions (eg. to load data from a database) and form actions (functions which handle POST requests from a form element). There can also be a \verb|+layout.server.ts| which can contain a general load function which applies to any pages in the same or nested folders.
+    \item \verb|src/lib| contains model code reused across the app. Components, utility functions, Svelte stores and type declarations all go here.
+\end{itemize}
+\subsubsection{UI/UX}
+\textbf{Components:} SvelteKit is a component based web framework. Components are custom UI elements you create out of standard HTML elements. This allows for consistent styling, functionality and reusability across the app. Each component consists of:
+\begin{itemize}
+    \item a \verb|script| section containing exported component prompts
+    \item the HTML for the component
+\end{itemize}
+For example, this excerpt from a \verb|Button.svelte| component consists of click, size, submit and icon props. 
+\begin{lstlisting}
+<script lang="ts">
+    export let click = () => {};
+    export let size = 'md';
+    export let submit = true;
+    export let icon = ''
+</script>
+\end{lstlisting}
+and these props are passed to an HTML \verb|<button>| element
+\begin{lstlisting}
+<button 
+    on:click={click}
+    type={submit ? 'submit' : 'button'}
+    ...
+\end{lstlisting}
+These props can be given values when the component is actually used in a parent webpage.
+\begin{lstlisting}
+<Button size="md" icon="fa-brush">Create</Button>
+\end{lstlisting}
+\textbf{Styling:} As aforementioned, instead of styling directly with CSS, I used the more modern approach of going with a CSS framework, specifically Tailwind. Tailwind consists of many modular, pre-defined classes which let you style elements rapidly and inside the HTML. This div is styled to be a flexbox, with a specified width and rounded corners.
+\begin{lstlisting}
+<div class="flex flex-col gap-2 w-6/12 rounded-2xl bg-opacity-80 bg-primary p-5">
+\end{lstlisting}
+For example, the \verb|flex| class is defined by Tailwind as:
+\begin{lstlisting}
+.flex {
+    display: flex;
+}
+\end{lstlisting}
+Notice the background is set to be \verb|bg-primary|. Thanks to Tailwind's configurability, we can specify a color palette, font family and font sizes in a \verb|tailwind.config.js|, and Tailwind will automatically incorporate our choices into the generated CSS class options.
+\begin{lstlisting}
+colors:{
+    'primary': '#2E4052',
+    'secondary': '#FFC857',
+    'tertiary': '#BDD9BF',
+    'quaternary': '#412234'
+},
+\end{lstlisting}
+\textbf{Icons:} Iconography is important for aesthetics and accessibility. Font Awesome is a library that provides high-quality minimalist SVG icons for websites. It exposes these assets via CSS classes, meaning just as with Tailwind we can reference icons directly in the markup of our website, providing consistency and cleanliness across the codebase. 
+\subsubsection{Authentication}
+Firebase has simple methods for creating and authenticating users with an email and password combination. The authentication flow is as follows:
+\begin{enumerate}
+    \item In the event that either method is successful, a result object is returned with a user property containing the user ID, display name and email.
+    \item We extract and save these into a custom User type object, (and write a user document to the Firestore database if this is a new user), and then set a `user' cookie value to this object (serialised).
+    \item We then have a \verb|+layout.server.ts| at the root of \verb|src/routes| containing a load function which returns the user object from the cookie.
+    \item  This load function applies to all webpages, safely and efficiently exposing the user object to all pages which require it.
+\end{enumerate}
+Using Firebase authentication with Firestore makes the app seamlessly secure. We can write custom security rules in Firestore to restrict user access to certain documents in the database. For example, here we ensure that a creation can only be edited by the original owner of the creation:
+\begin{lstlisting}
+match /creations/{document=**} {
+  allow write: if request.auth.uid == resource.data.uid;
+}
+\end{lstlisting}
+Firebase authentication handles attaching an auth token to any database requests the user makes, giving Firestore access to the \verb|request.auth| object to use in security rules.
+\subsubsection{Reactivity \& Updates}
+To ensure a reactive and responsive experience for users, we develop a way to keep the client and server in sync with a clean and elegant approach.
+We take advantage of Svelte reactive stores and Firestore realtime listeners.\\\\
+\textbf{Svelte Stores:} These are helpful for managing global state across components. The type of store we use is \verb|writable|, where we store arrays either of type \verb|Creation| or \verb|Product|, for the creation and marketplace tabs respectively. We can read and write values to these arrays, via the \verb|update| and \verb|set| methods of the store, and more importantly we can now subscribe to the store. Then, any components relying on the store values are automatically re-rendered by SvelteKit upon updates to the store. For example, this \verb|each| loop will re-render any of the necessary \verb|CreationDiv| components upon any updates to the \verb|creations| store.
+\begin{lstlisting}
+{#each $creations as creation (creation.id)}
+    <CreationDiv {creation}></CreationDiv>
+{/each}
+\end{lstlisting}
+\textbf{Realtime Listeners:} These simply subscribe to a collection of documents in the Firestore database, triggering upon any changes to the collection. Firebase returns a collection of \verb|DocumentChange|s, which supplies the document which was updated and the type of update (added, modified or removed).
+\\\\
+Using these two concepts, we can map changes we see from the listener to changes in the store, allowing us to efficiently update UI every time the database state changes. To do this mapping cleanly, we implement a \verb|Listener| wrapper class for each store, which gives us methods to easily update the store from listener document updates. 
+\begin{lstlisting}
+abstract class Listener<T>{
+    abstract update(struct: T): void;
+    abstract remove(struct: T): void;
+    abstract add(struct: T): void;
+    abstract docToType(doc: DocumentSnapshot): T;
+}
+\end{lstlisting}
+\noindent
+The diagram below illustrates the approach at a high level.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{reactivity.png}
+    \caption{Reactivity system for HumanMade\cite{gpt4}}
+\end{figure}
+\subsubsection{Machine Learning Microservice}
+
+
+
+\subsubsection{Blockchain Interface}
+\begin{itemize}
+    \item \textbf{MetaMask} is a leading self-custodial cryptocurrency wallet, used to interact with the Ethereum blockchain. Users can access their wallet and perform transactions with ease, and the MetaMask Chrome extension provides a way for websites to integrate with the blockchain.
+    \item \textbf{Solidity} is the defacto programming language for implementing smart contracts, mainly on the Ethereum blockchain. A smart contract can be thought of as a self-executing contract that a user can interact with by sending crypto to.
+    \item \textbf{Remix} is an open-source IDE widely used for smart contract development. We use Remix to compile, deploy and test our smart contract. 
+\end{itemize}
 \subsubsection{Command Line Interface}
+\begin{itemize}
+    \item \textbf{Node.js} allows us to write a command line script in Typescript, make network requests and take advantage of helpful libraries to parse command line arguments effectively.
+\end{itemize}
+
+\subsection{Architecture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{architecture.png}
+    \caption{System architecture for HumanMade. \cite{gpt4}}
+\end{figure}
+\section{Implementation}
+\subsection{Blockchain}
+\subsection{Command Line Interface}
 \subsection{Testing}
 
 \section{Conclusions}
