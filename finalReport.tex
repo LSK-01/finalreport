@@ -393,7 +393,7 @@ We then use Remix to compile and deploy the contract. The Solidity contract is c
 \end{enumerate}
 We opt for 2,  deploying the contract to the Sepolia testnet, a proof-of-stake network designed to mimic the operating environment of the mainnet but existing on a separate blockchain ledger. We can receive free ETH on this testnet via many of the available Sepolia `faucets'.
 
-This is in fact our only viable option. Firstly, at least until it is required in production, we don't have to pay the (sometimes exorbitant) gas fees required to commit a contract (or conclude any transaction) to the mainnet during testing. Secondly, we want to be able to test our contract with an actual wallet provider (we use MetaMask), which would not be possible if we deployed our contract to the virtual browser network.
+This is in fact our only viable option. At least until it is required in production, we don't want to have to pay the (sometimes exorbitant) gas fees required to commit a contract (or conclude any transaction) to the mainnet during testing, as with option 1. We also want to be able to test our contract with an actual wallet provider (we use MetaMask), which would not be possible if we deployed our contract to the virtual browser network with option 3.
 
 Deploying via Remix to the Sepolia testnet, (paying gas fees using a wallet with Sepolia ETH in it), gives us the contract address and contract ABI, which is all the information we need to send a transaction to the contract. 
 \begin{figure}[H]
