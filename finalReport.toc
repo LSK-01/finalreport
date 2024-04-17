@@ -1,42 +1,43 @@
 \contentsline {section}{\numberline {1}Motivators}{5}{section.1}%
 \contentsline {subsection}{\numberline {1.1}The Generative AI Explosion}{5}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}A Look at the SOTA}{6}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Preserving Human Creativity}{8}{subsection.1.3}%
-\contentsline {section}{\numberline {2}Background}{9}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Related systems}{9}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Issues with Direct Detection}{10}{subsection.2.2}%
-\contentsline {section}{\numberline {3}Objectives}{11}{section.3}%
-\contentsline {section}{\numberline {4}Design}{11}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Initial Design Ideas}{11}{subsection.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}Issues}{12}{subsubsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.2}Final Design}{12}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}Advantages}{12}{subsubsection.4.2.1}%
-\contentsline {section}{\numberline {5}Functionality}{13}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Web App}{14}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Blockchain Interface}{14}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Command Line Interface}{14}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Implementation}{14}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Architecture}{14}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Web App}{14}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}Tech Stack}{14}{subsubsection.6.2.1}%
-\contentsline {subsubsection}{\numberline {6.2.2}General Structure}{15}{subsubsection.6.2.2}%
-\contentsline {subsubsection}{\numberline {6.2.3}UI/UX}{16}{subsubsection.6.2.3}%
-\contentsline {subsubsection}{\numberline {6.2.4}Authentication}{17}{subsubsection.6.2.4}%
-\contentsline {subsubsection}{\numberline {6.2.5}Reactivity \& Updates}{18}{subsubsection.6.2.5}%
-\contentsline {subsection}{\numberline {6.3}Machine Learning Microservice}{19}{subsection.6.3}%
-\contentsline {subsubsection}{\numberline {6.3.1}Tech Stack}{19}{subsubsection.6.3.1}%
-\contentsline {subsubsection}{\numberline {6.3.2}Firebase Storage}{19}{subsubsection.6.3.2}%
-\contentsline {subsubsection}{\numberline {6.3.3}Data Flow}{20}{subsubsection.6.3.3}%
-\contentsline {subsubsection}{\numberline {6.3.4}Similarity Computation}{20}{subsubsection.6.3.4}%
-\contentsline {subsection}{\numberline {6.4}Blockchain Interface}{22}{subsection.6.4}%
-\contentsline {subsubsection}{\numberline {6.4.1}Tech Stack}{22}{subsubsection.6.4.1}%
-\contentsline {subsubsection}{\numberline {6.4.2}Smart Contract Development}{22}{subsubsection.6.4.2}%
-\contentsline {subsubsection}{\numberline {6.4.3}Performing Transactions}{23}{subsubsection.6.4.3}%
-\contentsline {subsection}{\numberline {6.5}Command Line Interface}{23}{subsection.6.5}%
-\contentsline {section}{\numberline {7}Implementation}{24}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Blockchain}{24}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Command Line Interface}{24}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Testing}{24}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Conclusions}{24}{section.8}%
-\contentsline {section}{\numberline {9}Project Management}{24}{section.9}%
-\contentsline {section}{\numberline {10}Philosophy of ito}{24}{section.10}%
+\contentsline {subsection}{\numberline {1.2}A Look at the SOTA}{5}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Preserving Human Creativity}{7}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Background}{8}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Related systems}{8}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Issues with Direct Detection}{9}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Objectives}{10}{section.3}%
+\contentsline {section}{\numberline {4}Design}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Initial Design Ideas}{10}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Issues}{10}{subsubsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.2}Final Design}{10}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Advantages}{11}{subsubsection.4.2.1}%
+\contentsline {section}{\numberline {5}Functionality}{11}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Web App}{12}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Blockchain Interface}{12}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Command Line Interface}{12}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Implementation}{12}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Architecture}{12}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Web App}{12}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Tech Stack}{12}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}General Structure}{13}{subsubsection.6.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.3}UI/UX}{13}{subsubsection.6.2.3}%
+\contentsline {subsubsection}{\numberline {6.2.4}Authentication}{14}{subsubsection.6.2.4}%
+\contentsline {subsubsection}{\numberline {6.2.5}Reactivity \& Updates}{15}{subsubsection.6.2.5}%
+\contentsline {subsection}{\numberline {6.3}Machine Learning Microservice}{16}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}Tech Stack}{16}{subsubsection.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.2}Firebase Storage}{16}{subsubsection.6.3.2}%
+\contentsline {subsubsection}{\numberline {6.3.3}Data Flow}{16}{subsubsection.6.3.3}%
+\contentsline {subsubsection}{\numberline {6.3.4}Similarity Computation}{17}{subsubsection.6.3.4}%
+\contentsline {subsection}{\numberline {6.4}Blockchain Interface}{18}{subsection.6.4}%
+\contentsline {subsubsection}{\numberline {6.4.1}Tech Stack}{18}{subsubsection.6.4.1}%
+\contentsline {subsubsection}{\numberline {6.4.2}Smart Contract Development}{18}{subsubsection.6.4.2}%
+\contentsline {subsubsection}{\numberline {6.4.3}Communication Setup}{19}{subsubsection.6.4.3}%
+\contentsline {subsubsection}{\numberline {6.4.4}Performing Transactions}{19}{subsubsection.6.4.4}%
+\contentsline {subsection}{\numberline {6.5}Command Line Interface}{20}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Implementation}{20}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Blockchain}{20}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Command Line Interface}{20}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Testing}{20}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Conclusions}{20}{section.8}%
+\contentsline {section}{\numberline {9}Project Management}{20}{section.9}%
+\contentsline {section}{\numberline {10}Philosophy of ito}{20}{section.10}%

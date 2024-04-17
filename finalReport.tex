@@ -9,6 +9,13 @@
 \usepackage{float}
 \usepackage{multirow}
 \usepackage{array}
+\usepackage{geometry}
+\geometry{
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm
+}
 \usepackage{listings}
 \bibliographystyle{IEEEtran}
 \usepackage{xcolor}
@@ -370,9 +377,10 @@ Finally, we used cosine similarity (\verb|1-cosine(vec1, vec2)|) to compare the 
 \subsection{Blockchain Interface}
 \subsubsection{Tech Stack}
 \begin{itemize}
-    \item \textbf{MetaMask} is a leading self-custodial cryptocurrency wallet, used to interact with the Ethereum blockchain. Users can access their wallet and perform transactions with ease, and the MetaMask Chrome extension provides a way for websites to integrate with the blockchain.
+    \item \textbf{MetaMask} is a leading self-custodial cryptocurrency wallet, used to interact with the Ethereum blockchain. Users can access their wallet and perform transactions with ease, and without having to send their private key across a network. The MetaMask Chrome extension provides a modern way for web apps to integrate with the blockchain.
     \item \textbf{Solidity} is the defacto programming language for implementing smart contracts, mainly on the Ethereum blockchain. A smart contract can be thought of as a self-executing contract that a user can interact with by sending crypto to.
     \item \textbf{Remix} is an open-source IDE widely used for smart contract development. We use Remix to compile, deploy and test our smart contract. 
+    \item \textbf{Web3.js} is a collection of open-source libraries that primarily provides an abstracted interface for communication with an Ethereum node, as well as other helpful utility functions. This is the layer we use to interface with the Blockchain from our frontend JavaScript.
 \end{itemize}
 \subsubsection{Smart Contract Development}
 The code for the smart contract is fairly short, consisting of a 
@@ -390,19 +398,46 @@ This is in fact our only viable option. Firstly, at least until it is required i
 Deploying via Remix to the Sepolia testnet, (paying gas fees using a wallet with Sepolia ETH in it), gives us the contract address and contract ABI, which is all the information we need to send a transaction to the contract. 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{deploy.png}
+    \includegraphics[scale=0.6]{deploy.png}
     \caption{The process for compiling and deploying the Solidity smart contract}
 \end{figure}
+\subsubsection{Communication Setup}
+To communicate with the blockchain using the Web3.js interface, we need to pass the \verb|Web3| constructor a `provider'.
+A provider is an object which communicates with an Ethereum node, supplying essential properties and methods which adhere to the Ethereum Provider API standard. MetaMask supplies us with this object when installed, injecting a \verb|window.ethereum| object into the browser for web apps to make use of.
+\begin{lstlisting}
+const web3 = new Web3(window.ethereum);
+\end{lstlisting}
+Now that \verb|Web3| is invoked with a valid provider, we can create a Contract object which will let us execute our contract methods on the chain. This is where we need the contract address and ABI:
+\begin{lstlisting}
+const contract = 
+    new web3.eth.Contract(JSON.parse(abi), address);
+\end{lstlisting}
+Now, we have access to all the methods we need to perform a transaction on the chain.
 \subsubsection{Performing Transactions}
-We want the transaction we perform to contain content related to the files in the progress timeline commit, and to the user themselves. This way, each commit is tamper-proof and traceable, with the content and creator recorded permanently on the blockchain ledger.\\\\
-To perform a transaction, we need:
-\begin{itemize}
-    \item The contract address and ABI
-    \item The wallet address of the user
-    \item To calculate gas fees
-\end{itemize}
-The contract address and ABI are stored on the server for safety, so the backend controller makes a call to a \verb|blockchainCommit| API endpoint to get these details first. Then, upon pressing the link icon on a progress timeline commit, the frontend checks whether the user has MetaMask installed, and if so
-
+We want the transaction we perform to contain content related to the files in the progress timeline commit, and to the user themselves. This way, each commit is tamper-proof and traceable, with the original content and creator recorded permanently on the blockchain ledger.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.55]{bchain.png}
+    \caption{The full process of performing a transaction end-to-end}
+\end{figure}
+Upon a user clicking the `link' icon on a progress timeline commit:
+\begin{enumerate}
+    \item We get the contract address and ABI. These are stored on the server for safety, so the backend controller makes a call to a \verb|blockchainCommit| API endpoint to get these details first. 
+    \item We request access to the MetaMask accounts, obtaining the user's wallet address.
+    \item We create the transaction object - a simple JavaScript object where we pass:
+    \begin{itemize}
+        \item the receiver, in this case the contract address
+        \item the sender, in this case the user's wallet
+        \item a data string the Ethereum Virtual Machine can interpret as a command, in this case an Application Binary Interface string representing a call to the contract method \verb|makeCommit|. We obtain this using a method on the Contract object we created in the setup phase.
+        \item the user's transaction count (the nonce, which provides a unique ID for each transaction and ensures transactions are ordered and executed correctly)
+        \item gas fees and the gas limit. We calculate the fee based on the latest blocks gas fee, and the limit based on the size of the transaction object.
+    \end{itemize}
+\end{enumerate}
+Finally, we perform the transaction, 
+\begin{lstlisting}
+const txHash = await web3.eth.sendTransaction(txObject);
+\end{lstlisting}
+and save the hash to the database, signifying that the commit has been recorded on the blockchain.
 \subsection{Command Line Interface}
 \begin{itemize}
     \item \textbf{Node.js} allows us to write a command line script in Typescript, make network requests and take advantage of helpful libraries to parse command line arguments effectively.
