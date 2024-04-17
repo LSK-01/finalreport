@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex finalReport"] 1712168943 "finalReport.aux" "finalReport.bbl" "finalReport" 1712168955 0
-  "./finalReport.bib" 1711303870 5355 0b1cc6b6e7eb68bb99f1204bc98381a1 ""
+["bibtex finalReport"] 1713287376 "finalReport.aux" "finalReport.bbl" "finalReport" 1713289236 0
+  "./finalReport.bib" 1713262873 5567 6cab9e5d83ec25c49f599fee9b607e20 ""
   "/usr/local/texlive/2023/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1440712899 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "finalReport.aux" 1712168955 8597 23a2d8d6e573607990c89b7c00f8b6ea "pdflatex"
+  "finalReport.aux" 1713289236 10084 bc68f6ec974fcb2c328fa3ec571d0582 "pdflatex"
   (generated)
   "finalReport.bbl"
   "finalReport.blg"
   (rewritten before read)
-["pdflatex"] 1712168954 "/Users/god/Documents/thirdYear/cs310/reports/finalReport/finalReport.tex" "finalReport.pdf" "finalReport" 1712168955 0
-  "/Users/god/Documents/thirdYear/cs310/reports/finalReport/finalReport.tex" 1712168954 29496 153eca600802195f82780dfea2e49c18 ""
+["pdflatex"] 1713289234 "/Users/god/Documents/thirdYear/cs310/reports/finalReport/finalReport.tex" "finalReport.pdf" "finalReport" 1713289236 0
+  "/Users/god/Documents/thirdYear/cs310/reports/finalReport/finalReport.tex" 1713289234 36465 612e62bdef11abd3fce95b60e7edcfd8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -104,16 +104,19 @@
   "architecture.png" 1711482769 92327 bbb19cd48829876b0be10015f12777fc ""
   "biasDiagram.jpg" 1710264069 119815 32e6f26ffc9696764ed482a979b15c78 ""
   "catDiffusion.jpg" 1710698545 156758 4bf288255015ecba5b1ca1514d350e3b ""
-  "finalReport.aux" 1712168955 8597 23a2d8d6e573607990c89b7c00f8b6ea "pdflatex"
-  "finalReport.bbl" 1712168943 5448 3baad9c5ea7fd9fd17f449c7dccf16d4 "bibtex finalReport"
-  "finalReport.out" 1712168955 4740 17246da141fb719bdc0e9e9c32de3ff4 "pdflatex"
-  "finalReport.tex" 1712168954 29496 153eca600802195f82780dfea2e49c18 ""
-  "finalReport.toc" 1712168955 2872 d0d9de29d2498bc120d6e6074cf1722a "pdflatex"
+  "deploy.png" 1713281026 96647 bf3996b24f2218e5659bf4ce9e75aedf ""
+  "finalReport.aux" 1713289236 10084 bc68f6ec974fcb2c328fa3ec571d0582 "pdflatex"
+  "finalReport.bbl" 1713287376 5725 5812f340bea37e734dff654cf2d3a856 "bibtex finalReport"
+  "finalReport.out" 1713289236 5790 dde6e813d621b1f387828bea84dcf133 "pdflatex"
+  "finalReport.tex" 1713289234 36465 612e62bdef11abd3fce95b60e7edcfd8 ""
+  "finalReport.toc" 1713289236 3497 8ada91337d15abf995dfbf21679ac338 "pdflatex"
   "humbot1.png" 1710270700 105712 265a9439baa249ea699c243a7a621e35 ""
   "humbot2.png" 1710270700 100448 aac57de17a21d54727e211c6ab5a0f28 ""
   "linearScaling.png" 1710275621 50474 422cf12eca3fcd5e4baff63fc82bdd91 ""
+  "ml.png" 1713261433 115514 b07672e951da35dc415c8c339fbe5f46 ""
   "nvidiaGraph.png" 1710004038 38957 284cccb4d3e827910ea9c4440b901c15 ""
   "reactivity.png" 1712168908 45127 b0817a04d1e1603d55374a1b398e5872 ""
+  "resnet.png" 1713263226 132629 ca7bc8cc3f1113b5901bd19f941378e4 ""
   "sora.jpg" 1710277877 332259 78c62fc582c7979386c3b744c6d0534a ""
   "turtle.png" 1710277513 2108629 7830c8053d0462312e0359e8d9f7bd7f ""
   (generated)

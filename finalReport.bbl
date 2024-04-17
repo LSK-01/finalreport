@@ -115,4 +115,9 @@ Adobe. (2023) Content credentials for assets generated with adobe firefly. [Onli
 (2024) What is stable diffusion and how does it work? [Online]. Available: \url{https://www.vegait.co.uk/media-center/knowledge-base/what-is-stable-diffusion-and-how-does-it-work}
 \BIBentrySTDinterwordspacing
 
+\bibitem{convNN}
+\BIBentryALTinterwordspacing
+(2012) Imagenet classification with deep convolutional neural networks. [Online]. Available: \url{https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}

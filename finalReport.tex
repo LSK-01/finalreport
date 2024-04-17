@@ -216,6 +216,12 @@ We will look at the completed functionality of each before delving into implemen
 
 
 \section{Implementation}
+\subsection{Architecture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{architecture.png}
+    \caption{System architecture for HumanMade. \cite{gpt4}}
+\end{figure}
 \subsection{Web App}
 
 \subsubsection{Tech Stack}
@@ -233,11 +239,12 @@ Roughly, a SvelteKit project consists of:
     \item \verb|src/routes| contains all the application's pages and endpoints. SvelteKit uses a filesystem-based routing system, so the folder \verb|src/routes/marketplace| will contain the code for the page route \verb|/marketplace|
     \item In each route folder, eg. \verb|src/routes/marketplace|, there is a \verb|+page.svelte|, \verb|+layout.svelte|, and potentially a \verb|+page.ts| or \verb|+page.server.ts|.\\\\ \verb|+page.svelte| contains the HTML and any frontend JavaScript for the webpage. \verb|+layout.svelte| contains HTML that can be used to apply a general layout to any pages in the same or nested folders. \\\\\verb|+page.ts| and \verb|+page.server.ts| are like the `backend' for a page, and contain load functions (eg. to load data from a database) and form actions (functions which handle POST requests from a form element). There can also be a \verb|+layout.server.ts| which can contain a general load function which applies to any pages in the same or nested folders.
     \item \verb|src/lib| contains model code reused across the app. Components, utility functions, Svelte stores and type declarations all go here.
+    \item \verb|src/routes/api| is where SvelteKit has you write any POST/GET API endpoints for your application. For example, adding a new folder named \verb|xyz|, containing a file named \verb|+server.ts| with a POST function, creates a new \verb|xyz| endpoint that handles POST requests.
 \end{itemize}
 \subsubsection{UI/UX}
 \textbf{Components:} SvelteKit is a component based web framework. Components are custom UI elements you create out of standard HTML elements. This allows for consistent styling, functionality and reusability across the app. Each component consists of:
 \begin{itemize}
-    \item a \verb|script| section containing exported component prompts
+    \item a \verb|script| section containing exported component prompts and any interactive functionality
     \item the HTML for the component
 \end{itemize}
 For example, this excerpt from a \verb|Button.svelte| component consists of click, size, submit and icon props. 
@@ -322,27 +329,86 @@ The diagram below illustrates the approach at a high level.
     \includegraphics[scale=0.8]{reactivity.png}
     \caption{Reactivity system for HumanMade\cite{gpt4}}
 \end{figure}
-\subsubsection{Machine Learning Microservice}
+\subsection{Machine Learning Microservice}
+\subsubsection{Tech Stack}
+\begin{enumerate}
+    \item \textbf{TensorFlow} is a free and open-source machine learning library from Google, providing state of the art models and APIs in Python.
+    \item \textbf{Flask} is a micro web framework written in Python, perfect for setting up a simple API for the microservice with which the main web app can interoperate. 
+\end{enumerate}
+This microservice handles computation of the similarity score between images of the same tag across commits, as described in the functionality section.
+\subsubsection{Firebase Storage} Any images uploaded in a commit are stored in cloud storage, with a \verb|+| separated filename consisting of the image \verb|tag|, \verb|file.type| and the current date to avoid the chance of duplicate filenames.
+\subsubsection{Data Flow} The data flow when interacting with the ML processing microservice is as follows, and is also detailed in the below diagram.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.45]{ml.png}
+    \caption{Data flow diagram for the ML microservice}
+\end{figure}
+Upon a new commit to the progress timeline containing an image tagged \verb|{tag}|, and given there is an image with tag \verb|{tag}| in the previous commit:
+\begin{enumerate}
+    \item The base 64 encoding of the image in the current commit, and the URL of the image in the previous commit are posted in JSON to the \verb|imageSimilarity| API endpoint. 
+    \item The microservice processes the images (detailed in the next section), and return back a similarity score to the web app API's request.
+    \item The endpoint returns the similarity score to the frontend, and this is displayed on the progress timeline if below a certain threshold.
+\end{enumerate}
+\subsubsection{Similarity Computation} ResNet50, a 50 layer Convolutional Neural Network provided by the Tensorflow library, is used to extract a high level feature vector from each of the images. These two vectors are then compared using cosine similarity.\\
 
+Firstly, we preprocess the images:
+\begin{itemize}
+    \item Images are received by Flask in a POST method. The images are downloaded (as required) and written to \verb|.jpg| files. 
+    \item Images are size adjusted (ResNet required images to be in \verb|224x224| resolution) and converted to a 3D array (width by height by color channels, (224,224,3)). ResNet actually takes input in 4D, where the first dimension represents batch size, so we need to expand our array to dimensions (1,224,224,3).
+    \item Finally the TensorFlow provided \verb|preprocess_input()| function scales and normalises pixel values of the image.
+\end{itemize}
+Then, we can extract a feature vector for each image: ResNet50 is a classification model, with its final layer consisting of 1,000 different classes. We do not want to classify our images - so, we stop the model at an intermediate layer, giving us a high level feature vector describing the images. We can do this with the provided \verb|Model| python class, which lets us specify a base model and the output layer. ResNet50 consists of pooling, convolutional and ReLU activation layers. 
 
+We choose a late convolutional layer to stop at. These layers are where kernels/filters are applied to the image to better detect high level abstract features \cite{convNN}, which is what we want when comparing similarity. The general shape, color and vibe of an image should not change drastically commit to commit as a user is working on a project, whereas specific pixel values and details could and should be allowed to.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{resnet.png}
+    \caption{We look to cut off ResNet's output early.}
+\end{figure}
+Finally, we used cosine similarity (\verb|1-cosine(vec1, vec2)|) to compare the feature vectors. At a high level we can think of this as measuring the 'direction' of the vectors in \verb|n|-dimensional space and seeing how closely they align.
 
-\subsubsection{Blockchain Interface}
+\subsection{Blockchain Interface}
+\subsubsection{Tech Stack}
 \begin{itemize}
     \item \textbf{MetaMask} is a leading self-custodial cryptocurrency wallet, used to interact with the Ethereum blockchain. Users can access their wallet and perform transactions with ease, and the MetaMask Chrome extension provides a way for websites to integrate with the blockchain.
     \item \textbf{Solidity} is the defacto programming language for implementing smart contracts, mainly on the Ethereum blockchain. A smart contract can be thought of as a self-executing contract that a user can interact with by sending crypto to.
     \item \textbf{Remix} is an open-source IDE widely used for smart contract development. We use Remix to compile, deploy and test our smart contract. 
 \end{itemize}
-\subsubsection{Command Line Interface}
+\subsubsection{Smart Contract Development}
+The code for the smart contract is fairly short, consisting of a 
+\\\verb|makeCommit(string[] fileHashes)| function, which emits an event\\ \verb|CommitMade(msg.sender, hash)| that could be used to trigger actions in other decentralized applications in the future. For the purpose of this application, the \verb|makeCommit| function is of importance, as this is what gets recorded in a transaction on the blockchain when invoked, as will be detailed.\\\\
+We then use Remix to compile and deploy the contract. The Solidity contract is compiled down to bytecode, and can then be deployed to
+\begin{enumerate}
+    \item the Ethereum mainnet
+    \item a Ethereum testnet
+    \item a virtual JavaScript network in the browser
+\end{enumerate}
+We opt for 2,  deploying the contract to the Sepolia testnet, a proof-of-stake network designed to mimic the operating environment of the mainnet but existing on a separate blockchain ledger. We can receive free ETH on this testnet via many of the available Sepolia `faucets'.
+
+This is in fact our only viable option. Firstly, at least until it is required in production, we don't have to pay the (sometimes exorbitant) gas fees required to commit a contract (or conclude any transaction) to the mainnet during testing. Secondly, we want to be able to test our contract with an actual wallet provider (we use MetaMask), which would not be possible if we deployed our contract to the virtual browser network.
+
+Deploying via Remix to the Sepolia testnet, (paying gas fees using a wallet with Sepolia ETH in it), gives us the contract address and contract ABI, which is all the information we need to send a transaction to the contract. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{deploy.png}
+    \caption{The process for compiling and deploying the Solidity smart contract}
+\end{figure}
+\subsubsection{Performing Transactions}
+We want the transaction we perform to contain content related to the files in the progress timeline commit, and to the user themselves. This way, each commit is tamper-proof and traceable, with the content and creator recorded permanently on the blockchain ledger.\\\\
+To perform a transaction, we need:
+\begin{itemize}
+    \item The contract address and ABI
+    \item The wallet address of the user
+    \item To calculate gas fees
+\end{itemize}
+The contract address and ABI are stored on the server for safety, so the backend controller makes a call to a \verb|blockchainCommit| API endpoint to get these details first. Then, upon pressing the link icon on a progress timeline commit, the frontend checks whether the user has MetaMask installed, and if so
+
+\subsection{Command Line Interface}
 \begin{itemize}
     \item \textbf{Node.js} allows us to write a command line script in Typescript, make network requests and take advantage of helpful libraries to parse command line arguments effectively.
 \end{itemize}
 
-\subsection{Architecture}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.6]{architecture.png}
-    \caption{System architecture for HumanMade. \cite{gpt4}}
-\end{figure}
+
 \section{Implementation}
 \subsection{Blockchain}
 \subsection{Command Line Interface}
