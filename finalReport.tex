@@ -16,6 +16,8 @@
     top=2cm,
     bottom=2cm
 }
+\usepackage{setspace}
+\onehalfspacing
 \usepackage{listings}
 \bibliographystyle{IEEEtran}
 \usepackage{xcolor}
@@ -180,6 +182,7 @@ After adequate research and analysis of the industry, the core objectives for Hu
     \item An easy way for creators to document their project and creative process to the app
     \item A way to ensure uploaded content is tamper-proof and traceable to a the author
 \end{itemize}
+TODO
 \section{Design}
 \subsection{Initial Design Ideas}
 Initially, to circumvent the extensive issues with direct detection detailed previously, but to still allow for seamless and automatic verification, HumanMade was to work on an `evidence collection' basis. Evidence relating to the creative process itself would be collected, with the hope that this would give enough of a holistic input to whatever (likely ML) model was to be used to decide whether a creation was human or AI generated. Upon starting the project, there were some large caveats with this approach:
@@ -187,7 +190,7 @@ Initially, to circumvent the extensive issues with direct detection detailed pre
 \begin{itemize}
     \item Data collection for training would be long \& an unproductive use of time. There were no existing datasets for my purpose.
     \item Data collected would be messy, with few consistent patterns. `Evidence' could have included screen recordings, screenshots, timelapses, etc. There would not have been many consistent underlying features or patterns to learn to make a fully automated ML approach work well.
-    \item Not actually avoiding the fundamental issues stemming from direct detection. At some point, GAI technologies would probably get so good that they would be able to generate the evidence being used to identify human made creations. This leads to a further philosophical point detailed later, but it was clear a more holistic approach would be required.
+    \item Not actually avoiding the fundamental issues stemming from direct detection. At some point, GAI technologies would probably get so good that they would be able to generate the evidence being used to identify human made creations. This leads to a further philosophical point detailed later, but it was clear a more holistic approach would be required. One that helps a consumer decide if a creation has had enough human investment to warrant supporting, and one that gives human creators a thriving community and the tooling to effectively share their work.
 \end{itemize}
 \subsection{Final Design}
 The final design relies on some partially automated verification to give users an easier time identifying what might be human made, but the main approach revolves around the key concept of a progression timeline. 
@@ -203,25 +206,53 @@ This approach had some inherent advantages, addressing the systemic issues we se
     \item Generative AI has a very obvious `diffusion' progression. An image of pure noise is slowly transformed into the final output. This would be easy to spot on a progress timeline.
     \item The approach allows the community to decide the level of AI involvement in a creation they are comfortable with, as this is clearly a gray area. Certain AI tools which simply help a human creator be more effective in creating may not be inherently negative.
     \item The approach sidesteps the `arms race' between AI detectors and AI generators by allowing the community to decide for themselves what they think constitutes a human made creation. At a philosophical level, the best `neural network' one can use to achieve the aims of human made is the human brain.
-    \begin{figure}[h]
+    \begin{figure}[H]
         \centering
         \includegraphics[scale=0.3]{catDiffusion.jpg}
         \caption{An example of the diffusion progression when generating a photo of a cat \cite{cat}.}
     \end{figure}
 \end{itemize}
 \section{Functionality}
-There are then three main areas of development:
+There are then four main areas of development:
 \begin{enumerate}
     \item \textbf{Web App} \\This involves giving users the ability to make new creations, commit to and view their progress timeline for each creation, and a marketplace for finished creations.
-    \item \textbf{Blockchain Interface} \\This involves creating a simple interface to make any commit tamper-proof and traceable by allowing users to add data from their commits to the blockchain.
+    \item \textbf{Machine Learning Microservice} \\This involves implementing the `partially automated verification' alluded to in the Final Design chapter. A metric for the continuity and progression across commits is computed using ML techniques.
+    \item \textbf{Blockchain Interface} \\This involves creating a simple interface to make any commit tamper-proof and traceable by allowing users to record their commits to the blockchain.
     \item \textbf{Command Line Interface} \\This involves the creation of a command line tool that allows users to easily add commits to a progress timeline.
 \end{enumerate}
 We will look at the completed functionality of each before delving into implementation details.
 \subsection{Web App}
+\subsubsection{Homepage}
+There is a basic homepage, currently only serving login functionality. This could easily be further extended to include account customization and creator profiles, but the main goal of the project was to build out the essential tools for the HumanMade proof of concept.
+\subsubsection{Creations}
+This is the tab of main importance in the application. Here a user can add new creations to their existing list, and within a creation is the `progress timeline'. 
+
+Users commit to this progress timeline as they progress in their creation. A commit consists of:
+\begin{itemize}
+    \item a percentage indicating estimated completion
+    \item files related to the creation
+    \item a description
+    \item an indicator as to whether AI was used
+\end{itemize}
+\textbf{Tagging:} A user can add tags to images in a commit. When the same tag is used across commits, the images are compared and a `similarity score' is computed. If the images do not correspond to a reasonable progression then this is marked on the progress timeline. This is a proof of concept for the partially automated verification alluded to in the Final Design chapter, allowing human creators to show and prove their progression more clearly to consumers.
+\subsubsection{Marketplace}
+This allows consumers to like and view finished creations, including the progress timeline, from any creator. Finished creations can currently only be filtered by most recent or most liked. Again, the marketplace is fairly basic in sacrifice of fleshing out the more experimental, non-obvious proof of concepts for HumanMade.
 \subsection{Blockchain Interface}
+When a user clicks on the link icon in the top right of any commit on the progress timeline, a MetaMask window will pop up. (If the user has not yet installed MetaMask, they will be prompted to do so). 
+The user is prompted to login to their account, and the details of the transaction are displayed. If the user chooses to confirm the transaction, the file data in the commit and the user's ID will be hashed together and recorded on the blockchain via a smart contract function.  
 \subsection{Command Line Interface}
-
-
+The command line tool consists of 3 commands:
+\begin{itemize}
+    \item \textbf{login}, where the user specifies their email and later password in a hidden input
+    \item \textbf{commit}, which takes arguments for the files, tags, description, percentage, and the creation ID to commit to
+    \item \textbf{creations}, which lists all the creation ID's of the logged in user's creations.
+\end{itemize}
+The tool is written in Node.js and is run by using the \textbf{node} command, followed by the script path and required arguments. Example usage:
+\begin{lstlisting}
+node dist/humanmade.js login --email="sarifluca@gmail.com"
+node dist/humanmade.js creations
+node dist/humanmade.js commit --files="me.jpg" --inputTags="me" --description="A photo of me" --usedAI=false --percentage=50 --creationID=HGbyrdJjJSjwxXoKh9wO
+\end{lstlisting}
 \section{Implementation}
 \subsection{Architecture}
 \begin{figure}[H]
@@ -295,7 +326,7 @@ colors:{
 \end{lstlisting}
 \textbf{Icons:} Iconography is important for aesthetics and accessibility. Font Awesome is a library that provides high-quality minimalist SVG icons for websites. It exposes these assets via CSS classes, meaning just as with Tailwind we can reference icons directly in the markup of our website, providing consistency and cleanliness across the codebase. 
 \subsubsection{Authentication}
-Firebase has simple methods for creating and authenticating users with an email and password combination. The authentication flow is as follows:
+Firebase has simple API methods for creating and authenticating users with an email and password combination. The authentication flow is as follows:
 \begin{enumerate}
     \item In the event that either method is successful, a result object is returned with a user property containing the user ID, display name and email.
     \item We extract and save these into a custom User type object, (and write a user document to the Firestore database if this is a new user), and then set a `user' cookie value to this object (serialised).
@@ -347,7 +378,7 @@ This microservice handles computation of the similarity score between images of 
 \subsubsection{Data Flow} The data flow when interacting with the ML processing microservice is as follows, and is also detailed in the below diagram.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.45]{ml.png}
+    \includegraphics[scale=0.6]{ml.png}
     \caption{Data flow diagram for the ML microservice}
 \end{figure}
 Upon a new commit to the progress timeline containing an image tagged \verb|{tag}|, and given there is an image with tag \verb|{tag}| in the previous commit:
@@ -372,7 +403,7 @@ We choose a late convolutional layer to stop at. These layers are where kernels/
     \includegraphics[scale=0.8]{resnet.png}
     \caption{We look to cut off ResNet's output early.}
 \end{figure}
-Finally, we used cosine similarity (\verb|1-cosine(vec1, vec2)|) to compare the feature vectors. At a high level we can think of this as measuring the 'direction' of the vectors in \verb|n|-dimensional space and seeing how closely they align.
+Finally, we used cosine similarity (\verb|1-cosine(vec1, vec2)|) to compare the feature vectors. At a high level we can think of this as measuring the `direction' of the vectors in \verb|n|-dimensional space and seeing how closely they align.
 
 \subsection{Blockchain Interface}
 \subsubsection{Tech Stack}
@@ -384,18 +415,18 @@ Finally, we used cosine similarity (\verb|1-cosine(vec1, vec2)|) to compare the 
 \end{itemize}
 \subsubsection{Smart Contract Development}
 The code for the smart contract is fairly short, consisting of a 
-\\\verb|makeCommit(string[] fileHashes)| function, which emits an event\\ \verb|CommitMade(msg.sender, hash)| that could be used to trigger actions in other decentralized applications in the future. For the purpose of this application, the \verb|makeCommit| function is of importance, as this is what gets recorded in a transaction on the blockchain when invoked, as will be detailed.\\\\
-We then use Remix to compile and deploy the contract. The Solidity contract is compiled down to bytecode, and can then be deployed to
+\\\verb|makeCommit(string[] fileHashes)| function, which emits an event\\ \verb|CommitMade(msg.sender, hash)| that could be used to trigger actions in other decentralized applications in the future. For the purpose of this application, the \verb|makeCommit| function is of importance, as this is what gets recorded in a transaction on the blockchain when invoked.\\\\
+We then use Remix to compile and deploy the contract. The Solidity contract is compiled down to bytecode, and can then be deployed to either:
 \begin{enumerate}
     \item the Ethereum mainnet
     \item a Ethereum testnet
     \item a virtual JavaScript network in the browser
 \end{enumerate}
-We opt for 2,  deploying the contract to the Sepolia testnet, a proof-of-stake network designed to mimic the operating environment of the mainnet but existing on a separate blockchain ledger. We can receive free ETH on this testnet via many of the available Sepolia `faucets'.
+We opt for option 2,  deploying the contract to the Sepolia testnet, a proof-of-stake network designed to mimic the operating environment of the mainnet but existing on a separate blockchain ledger. We can receive free ETH to use on this testnet via many of the available Sepolia `faucets'.
 
-This is in fact our only viable option. At least until it is required in production, we don't want to have to pay the (sometimes exorbitant) gas fees required to commit a contract (or conclude any transaction) to the mainnet during testing, as with option 1. We also want to be able to test our contract with an actual wallet provider (we use MetaMask), which would not be possible if we deployed our contract to the virtual browser network with option 3.
+This is in fact the only viable option. At least until it is required in production, we don't want to have to pay the (sometimes exorbitant) gas fees required to commit a contract (or conclude any transaction) to the mainnet during testing, which option 1 would require. We also want to be able to test our contract using an actual transactions signed with MetaMask, which would not be possible if we deployed our contract to a virtual browser network with option 3.
 
-Deploying via Remix to the Sepolia testnet, (paying gas fees using a wallet with Sepolia ETH in it), gives us the contract address and contract ABI, which is all the information we need to send a transaction to the contract. 
+Deploying via Remix to the Sepolia testnet, (paying gas fees using a wallet with Sepolia ETH in it), gives us the contract address and contract Application Binary Interface (ABI), which is all the information we need to make a transaction with the contract. The ABI simply represents the contract in a structured format, so that calls to the contract can be encoded into bytecode which the Ethereum Virtual Machine can process.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.6]{deploy.png}
@@ -414,10 +445,10 @@ const contract =
 \end{lstlisting}
 Now, we have access to all the methods we need to perform a transaction on the chain.
 \subsubsection{Performing Transactions}
-We want the transaction we perform to contain content related to the files in the progress timeline commit, and to the user themselves. This way, each commit is tamper-proof and traceable, with the original content and creator recorded permanently on the blockchain ledger.
+We want the transaction we perform to contain content related to the files in the progress timeline commit, and to the user themselves. So, hash each file in the commit with the user ID, and pass it to our contract method. This way, each commit is tamper-proof and traceable, with the original content and creator recorded permanently on the blockchain ledger.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.55]{bchain.png}
+    \includegraphics[scale=0.6]{bchain.png}
     \caption{The full process of performing a transaction end-to-end}
 \end{figure}
 Upon a user clicking the `link' icon on a progress timeline commit:
@@ -428,7 +459,10 @@ Upon a user clicking the `link' icon on a progress timeline commit:
     \begin{itemize}
         \item the receiver, in this case the contract address
         \item the sender, in this case the user's wallet
-        \item a data string the Ethereum Virtual Machine can interpret as a command, in this case an Application Binary Interface string representing a call to the contract method \verb|makeCommit|. We obtain this using a method on the Contract object we created in the setup phase.
+        \item a data string the Ethereum Virtual Machine can interpret as a command, in this case a string of bytecode representing a call to the contract method \verb|makeCommit|. We can obtain this using the Contract object we created earlier in the setup phase.
+        \begin{lstlisting}
+data: contract.methods.makeCommit(commit.hashes).encodeABI()
+        \end{lstlisting}
         \item the user's transaction count (the nonce, which provides a unique ID for each transaction and ensures transactions are ordered and executed correctly)
         \item gas fees and the gas limit. We calculate the fee based on the latest blocks gas fee, and the limit based on the size of the transaction object.
     \end{itemize}
@@ -439,22 +473,102 @@ const txHash = await web3.eth.sendTransaction(txObject);
 \end{lstlisting}
 and save the hash to the database, signifying that the commit has been recorded on the blockchain.
 \subsection{Command Line Interface}
+\subsubsection{Tools Used}
 \begin{itemize}
-    \item \textbf{Node.js} allows us to write a command line script in Typescript, make network requests and take advantage of helpful libraries to parse command line arguments effectively.
+    \item \textbf{Node.js} is the defacto language and runtime for out-of-browser JavaScript. It allows us to write our command line tool in Typescript, make network requests and take advantage of the flourishing library ecosystem.
+    \item \textbf{Yargs} is a popular library for building command line tools in Node.js, providing an easy and abstracted way to specify commands and their functionality.
+    \item \textbf{Inquirer} is a popular library for building command line interface prompts.
 \end{itemize}
-
-
-\section{Implementation}
-\subsection{Blockchain}
-\subsection{Command Line Interface}
-\subsection{Testing}
-
+\subsubsection{Authentication}
+The user needs to be able to authenticate directly with Firebase through the command line interface, in order to securely commit to a creation.
+\begin{itemize}
+    \item The user will specify their email when using the login command.
+    \item Once executed, the command will prompt the user for their password, using Inquirer to ensure the input is hidden.
+    \item We can then use the same Firebase authentication methods provided for node as we did in the web app, giving us a \verb|result| object in return.
+    \item The difference now is we need to manually handle storing the authentication token for the user. We can extract the JSON Web Token (JWT) used to identify the user to a Firebase service from the \verb|result| object, and cache this in a text file. 
+    \begin{lstlisting}
+let token = await res.user.getIdToken();
+await fs.promises.writeFile("./HumanMade/token.txt", token);
+    \end{lstlisting}
+    The user can then use the command line tool freely until the token expires, in which case they would use the \verb|login| command again. 
+\end{itemize}
+The Firebase SDK which would normally sign the requests for a user automatically, as in the web app, only works within a browser environment. We must instead use the Firebase REST API in conjunction with the JWT.
+\subsubsection{Firebase REST API}
+We use the fetch API to interact with Firebase via the REST API. The base URL for all requests we will make is of the following form:
+\begin{lstlisting}
+const baseUrl = https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents
+\end{lstlisting}
+In every (POST) request to the API, we send the JWT along in the \verb|Authorization| property of the header. This lets Firebase Firestore identify the user querying the database, ensuring database requests adhere to security rules.
+\\\\
+If we want to query data, as in the case of querying creation IDs with the \textbf{creations} command, we can post a \verb|StructuredQuery| JSON object to the \verb|`${baseUrl}:runQuery`| endpoint. A \verb|StructuredQuery| object can specify all the attributes we would normally use when querying using the Firebase SDK, including \verb|where| clauses and a \verb|from| property to specify which collection we would like to query from. 
+\\\\
+Creating data, as in the case of creating a new commit with the \textbf{commit} command, we similarly POST a JSON object specifying the fields of the document we want to create, along with the JWT in the header. In the process of creating a commit we also handle image similarity across any images with the same tag, querying the \verb|/imageSimilarity| microservice endpoint.
+\section{Testing}
+postman, lighthouse
 \section{Conclusions}
-- evulation, process of production, lessons learnt, further work, limitations and contributoins
-
+\subsection{Limitations}
+Limitations of the project are mainly due to restrictions on time. Much of the choice of what to work on was dictated by how obvious and easy the work would be. Functionality which was non-trivial and added to the proof-of-concept for HumanMade was prioritised, and areas which could obviously be fleshed out with little need for creativity were understated.
+\begin{enumerate}
+    \item The marketplace has limited functionality. It is hard to find creations a user may be personally interested in, there is no fuzzy search, a lack of creator profiles and a following system, and no in-built buy or sell functionality. This would take time but be fairly simple to implement with modern technologies and libraries, and would flesh the project out to a fully usable one-stop platform for human creativity.
+    \item Currently, we only transact on a blockchain test-net instead of an actual production chain. Test-nets still implement the same cryptographic techniques that make blockchain a secure technology, providing a tamper-proof ledger with which we can record commits on. However, network security may not be as robust; the security of a chain is dependent on the number of nodes participating in the network, and there are fewer of these on test-nets due to their being less financial incentive (the tokens on these test-nets have no real world value). Further, support for a test-net like Sepolia could very well be discontinued.\\\\We did successfully implement a version of the blockchain interface which commits directly to the Ethereum Blockchain with minimal effort, since the transaction process for Sepolia is much the same, however this brings about separate limitations in the form of the high gas fees required for a transaction that (especially at busy times) can be non-negligible.
+    \item Extra effort is still required on the part of the creator to use the application, but lots of thought was put into reducing this workload, resulting in the command line utility.
+    \item Creative endeavours are rarely so linear in their progression. Perhaps adding support to branch/merge as in git would help creators express their progression more seamlessly to consumers.
+    \item There was a lack of market research undertaken to gauge what features real-life creatives would value. This was due to a lack of interaction and tight deadlines.
+\end{enumerate}
+\subsection{Future Development}
+As aforementioned, a lot of future development consists of fleshing out obvious areas of the application which were neglected due to tight deadlines.
+\begin{enumerate}
+    \item Additional ML techniques for the automatic verification of auditory and written media (the two other types of creation other than visual) could be added. Also, further research could uncover better techniques to gauge the credibility of a human progression across the timeline.
+    \item We could transact on a blockchain main-net with no gas prices - blockchains such as Nano \cite{nano} exist but were only discovered after completion of the project, and have much poorer developer ecosystems. 
+    \item The command line utility can be fleshed out further into a full git-like tool, providing branching, merging, deletion and restructuring capabilities of the timeline.
+    \item Adding recommendations (could involve using collaborative filtering ML methods), further filtering options, fuzzy search and creator profiles to the marketplace would help artists find their audience more easily, and help consumers find the art they want to support.  
+    \item The concept of a upvote/downvote system was floated early in the project - where creations with more upvotes (potentially a sign of legitimacy) are promoted and shown to more users. Community driven recommendations have been shown to work well across a multitude of social media platforms already.
+\end{enumerate}
+\subsection{Contributions}
+\begin{enumerate}
+    \item This is the first platform of its kind for human made creations. Whether the platform itself gains popularity, it is a useful blueprint and inspiration for what will inevitably become a highly in-demand service.
+    \item We address some of the large issues with popular AI detection tools, bringing a holistic viewpoint to the conversation of generative AI detection. It is important to avoid the speciesist trap that generative AI will always be detectable against human creations, as pointed out in the Motivations chapter.
+    \item We use an innovative combination of approaches and choices driven by research of the current state of the art and future projections of the technology. This includes tamper-proofing and tracing with blockchain, and progression detection with Convolutional Neural Networks.
+    \item We make use of scalable, modern and future-proofed tooling, using a young and popular reactive compiler-based framework in SvelteKit and a fast, secure database in Firebase.
+\end{enumerate}
 \section{Project Management}
+\subsection{Methodology}
+HumanMade involves a lot of integration and experimenting with cutting-edge technologies that I didn't necessarily have previous experience with, so it was important to keep the development process flexible as well as consistent.
 
-\section{Philosophy of ito}
+Agile lent much needed adaptability and flexibility to the process. Changes in scope were inevitable due to a foray into a completely new type of platform, incorporating modern technologies. We worked on weekly sprints based off of a GANTT chart (specified in the specification document) which provided us with a high level timeline and milestones to hit for the project. For a sprint, we would set a specific objective to complete a certain component or piece of functionality by the end of the week. Then, we could reassess the GANTT chart and formulate the next sprint, ensuring we stayed on track to deliver a finished product by the end. Agile further helped in this regard by ensuring we broke up work into manageable modules, which could be continuously delivered and integrated into the project. This avoided scenarios where a certain component could be worked on for a substantial period of the project only to not work or integrate correctly. For example, setting up a basic image similarity endpoint with a Flask app was one sprint, and in a separate sprint we delved deeper into using a machine learning approach.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{gantt.pdf}
+    \caption{The GANTT chart used throughout the project}
+\end{figure}
+\subsection{Tools}
+To aid with the above methodology:
+\begin{itemize}
+    \item Trello was used for bug tracking and defining sprints and tasks to complete
+    \item GitHub was used for version control, allowing development of experimental breaking features on separate branches, and providing an up-to-date backup for work by making it easy to consistently commit progress.
+    \item Visual Studio Code was used for development. This integrated environment has syntax and completion support for many of the technologies that were being used including Svelte, Python, and TypeScript.
+\end{itemize}
+\subsection{Risk}
+Risks were laid out at the start of the project, and relevant steps were taken to mitigate them:
+\begin{itemize}
+    \item Hardware failure, mitigated by:
+    \begin{itemize}
+        \item Keeping regular backups
+        \item Using git consistently
+    \end{itemize}
+    \item Lack of expertise in the areas of development, mitigated by:
+    \begin{itemize}
+        \item Scheduling regular check-ins with supervisor
+        \item Taking advantage of online material and LLM's like ChatGPT
+    \end{itemize}
+    \item Cloud services being used (GitHub) become unavailable, mitigated by:
+    \begin{itemize}
+        \item Keeping regular backups of report and code files on a third party like Google Drive
+    \end{itemize}
+\end{itemize}
+\subsection{Progress against Original Objectives}
+
+\section{Philosophy of it}
 \newpage
 \bibliography{finalReport}
 
