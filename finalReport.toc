@@ -1,0 +1,64 @@
+\contentsline {section}{\numberline {1}Motivators}{5}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Generative AI Explosion}{5}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}A Look at the SOTA}{6}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}The Need to Preserve Human Creativity}{7}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Background}{8}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Related systems}{8}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Issues with Direct Detection}{9}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Objectives \& Design}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Initial Design Ideas}{10}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Issues}{10}{subsubsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.2}Final Design}{11}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Advantages}{11}{subsubsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.3}Fixed objectives}{12}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Functional objectives}{12}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Nonfunctional objectives}{13}{subsubsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.4}Flexible objectives}{13}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Avoidable objectives}{14}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Functionality}{14}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Web App}{15}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Homepage}{15}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Creations}{15}{subsubsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.3}Marketplace}{19}{subsubsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.2}Blockchain Interface}{20}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Command Line Interface}{20}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Implementation}{21}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Architecture}{21}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Web App}{21}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Tech Stack}{21}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}General Structure}{23}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}UI/UX}{24}{subsubsection.5.2.3}%
+\contentsline {subsubsection}{\numberline {5.2.4}Authentication}{25}{subsubsection.5.2.4}%
+\contentsline {subsubsection}{\numberline {5.2.5}Reactivity \& Updates}{25}{subsubsection.5.2.5}%
+\contentsline {subsubsection}{\numberline {5.2.6}Accessibility}{27}{subsubsection.5.2.6}%
+\contentsline {subsection}{\numberline {5.3}Machine Learning Microservice}{27}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Tech Stack}{27}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Firebase Storage}{28}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}Data Flow}{28}{subsubsection.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.3.4}Similarity Computation}{28}{subsubsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.4}Blockchain Interface}{30}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}Tech Stack}{30}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Smart Contract Development}{31}{subsubsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.3}Communication Setup}{32}{subsubsection.5.4.3}%
+\contentsline {subsubsection}{\numberline {5.4.4}Performing Transactions}{32}{subsubsection.5.4.4}%
+\contentsline {subsection}{\numberline {5.5}Command Line Interface}{34}{subsection.5.5}%
+\contentsline {subsubsection}{\numberline {5.5.1}Tools Used}{34}{subsubsection.5.5.1}%
+\contentsline {subsubsection}{\numberline {5.5.2}Authentication}{34}{subsubsection.5.5.2}%
+\contentsline {subsubsection}{\numberline {5.5.3}Firebase REST API}{35}{subsubsection.5.5.3}%
+\contentsline {section}{\numberline {6}Testing, Performance \& Deployment}{35}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Playwright}{35}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Postman}{36}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Lighthouse}{38}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Etherscan}{40}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Conclusions}{40}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Limitations}{40}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Future Development}{41}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Contributions}{42}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Project Management}{43}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Development Methodology}{43}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Tools}{44}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Ethics, Social Issues \& Law}{45}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Data Collection \& Transfer}{45}{subsubsection.8.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.2}Artistic Value}{45}{subsubsection.8.3.2}%
+\contentsline {subsection}{\numberline {8.4}Project Evolution}{46}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Progress against Original Objectives}{47}{subsection.8.5}%
